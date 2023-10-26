@@ -18,7 +18,7 @@
     <%
         var amount = request.getParameter("amount") == null ? "" : request.getParameter("amount");
         var interestRate = request.getParameter("interestRate") == null ? "" : request.getParameter("interestRate");
-        var period = request.getParameter("period") == null ? "" : request.getParameter("period");
+        var periodInMonths = request.getParameter("periodInMonths") == null ? "" : request.getParameter("periodInMonths");
     %>
     <div>
         <h1>Kalkulator rat</h1>
@@ -35,7 +35,7 @@
             <br/><br/>
             <label>
                 Liczba rat
-                <input type="number" name="period" min="1" value="<%= period %>">
+                <input type="number" name="periodInMonths" min="1" value="<%= periodInMonths %>">
             </label>
             <br/><br/>
             <input type="submit" name="calculate" value="Oblicz">
@@ -46,7 +46,7 @@
                 try {
                     var k = Double.parseDouble(amount);
                     var pr = Double.parseDouble(interestRate);
-                    var n = Integer.parseInt(period);
+                    var n = Integer.parseInt(periodInMonths);
 
                     var monthlyInterestPayment = k * (pr / 100) / 12;
                     var monthlyInterestFactor = Math.pow(1 + (pr / 100) / 12, n);

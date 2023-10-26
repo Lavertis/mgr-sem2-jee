@@ -14,7 +14,7 @@ public class HomeServlet extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.sendRedirect("calc.jsp");
+        response.sendRedirect("calcWithBean.jsp");
     }
 
     public void destroy() {
