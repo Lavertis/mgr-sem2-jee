@@ -3,6 +3,7 @@
 <%@ page import="java.text.DateFormat" %>
 <%@ page import="java.text.DecimalFormat" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page errorPage="errorPage.jsp" %>
 <jsp:useBean id="loan" class="com.pollub.lab_2.LoanBean" scope="session"/>
 <jsp:setProperty name="loan" property="*"/>
 <html>
@@ -32,7 +33,7 @@
             <br/><br/>
             <label>
                 Liczba rat
-                <input type="number" name="periodInMonths" min="1" value="<%= loan.getPeriodInMonths() %>">
+                <input type="text" name="periodInMonths" min="1" value="<%= loan.getPeriodInMonths() %>">
             </label>
             <br/><br/>
             <input type="submit" name="calculate" value="Oblicz">
@@ -40,12 +41,8 @@
         <%
             String res = "";
             if (request.getParameter("calculate") != null) {
-                try {
-                    DecimalFormat df = new DecimalFormat("#.00");
-                    res = "Rata miesięczna: " + df.format(loan.getMonthlyPayment()) + "zł";
-                } catch (Exception ex) {
-                    res = "Błędne dane";
-                }
+                DecimalFormat df = new DecimalFormat("#.00");
+                res = "Rata miesięczna: " + df.format(loan.getMonthlyPayment()) + "zł";
             }
         %>
         <%= res %>
