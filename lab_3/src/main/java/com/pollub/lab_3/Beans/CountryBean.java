@@ -6,6 +6,7 @@ public class CountryBean implements Serializable {
     private String name;
     private String code;
     private int population;
+    private float surfaceArea;
 
     public String getName() {
         return name;
@@ -29,5 +30,13 @@ public class CountryBean implements Serializable {
 
     public void setPopulation(int population) {
         this.population = population;
+    }
+
+    public float getSurfaceArea() {
+        return surfaceArea;
+    }
+
+    public void setSurfaceArea(float surfaceArea) {
+        this.surfaceArea = surfaceArea;
     }
 }

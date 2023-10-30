@@ -42,6 +42,7 @@ public class ListServlet2 extends HttpServlet {
             country.setCode(rs.getString("Code"));
             country.setName(rs.getString("Name"));
             country.setPopulation(rs.getInt("Population"));
+            country.setSurfaceArea(rs.getFloat("SurfaceArea"));
             countries.add(country);
         }
 

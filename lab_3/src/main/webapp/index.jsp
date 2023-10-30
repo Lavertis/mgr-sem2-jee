@@ -9,6 +9,6 @@
 </h1>
 <br/>
 <a href="list-servlet1">Zadanie 2</a>&nbsp;&nbsp;
-<a href="list-servlet2">Zadanie 3</a>
+<a href="list-servlet2">Zadania 3+</a>
 </body>
 </html>
