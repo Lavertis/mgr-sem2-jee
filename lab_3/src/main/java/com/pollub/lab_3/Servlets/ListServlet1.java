@@ -29,7 +29,7 @@ public class ListServlet1 extends HttpServlet {
 
         // utworzenie obiektu do wykonywania zapytań do bd:
         Statement st = conn.createStatement();
-        String query = "SELECT * FROM Country WHERE Continent = 'Europe'";
+        String query = "SELECT * FROM country WHERE Continent = 'Europe'";
 
         // wykonanie zapytania SQL:
         ResultSet rs = st.executeQuery(query);
