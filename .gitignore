@@ -2,4 +2,4 @@ mvnw
 mvnw.cmd
 .mvn/
 **/.idea/
-/lab_4/target/
+**/target/
