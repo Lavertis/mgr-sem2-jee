@@ -3,7 +3,7 @@ package com.pollub.lab_5.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
-@Entity
+@Entity(name = "task")
 @Data
 public class Task {
     @GeneratedValue

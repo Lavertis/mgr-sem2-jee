@@ -6,7 +6,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
-@Entity
+@Entity(name = "country")
 @Data
 public class Country {
     @Id
