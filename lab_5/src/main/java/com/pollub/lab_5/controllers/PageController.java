@@ -1,7 +1,7 @@
 package com.pollub.lab_5.controllers;
 
-import com.pollub.lab_5.entities.Zadanie;
-import com.pollub.lab_5.repositories.ZadanieRepository;
+import com.pollub.lab_5.entities.Task;
+import com.pollub.lab_5.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class PageController {
     @Autowired
-    public ZadanieRepository rep;
+    public TaskRepository taskRepository;
 
     @RequestMapping("/")
     @ResponseBody
@@ -25,69 +25,61 @@ public class PageController {
         return "Hello Spring Boot from pageTwo() method!";
     }
 
-    @RequestMapping("seedZadania")
+    @RequestMapping("seedTasks")
     @ResponseBody
-    public String seedZadania() {
-        Zadanie z;
-        double k = 1000;
-        boolean wyk = false;
+    public String seedTasks() {
+        Task task;
+        double cost = 1000;
+        boolean isDone = false;
         for (int i = 1; i <= 10; i++) {
-            z = new Zadanie();
-            z.setNazwa("zadanie " + i);
-            z.setOpis("Opis czynności do wykonania w zadaniu " + i);
-            z.setKoszt(k);
-            z.setWykonane(wyk);
-            wyk = !wyk;
-            k += 200.50;
-            rep.save(z);
+            task = new Task();
+            task.setName("Task " + i);
+            task.setDescription("Description of actions to be performed in the task " + i);
+            task.setCost(cost);
+            task.setIsDone(isDone);
+            isDone = !isDone;
+            cost += 200.50;
+            taskRepository.save(task);
         }
-        return "Zadania zostały zapisane";
+        return "Tasks have been seeded";
     }
 
-    @RequestMapping("/listaZadan")
+    @RequestMapping("/tasks")
     @ResponseBody
-    public String listaZadan() {
-        StringBuilder odp = new StringBuilder();
-        for (Zadanie i : rep.findAll()) {
-            odp.append(i).append("<br>");
-        }
-        return odp.toString();
+    public String getTasks() {
+        StringBuilder response = new StringBuilder();
+        taskRepository.findAll().forEach(i -> response.append(i).append("<br>"));
+        return response.toString();
     }
 
-    @RequestMapping("/listaZadan/wykonane/{wykonane}")
+    @RequestMapping("/tasks/isDone/{isDone}")
     @ResponseBody
-    public String listaZadanByWykonane(@PathVariable boolean wykonane) {
-        StringBuilder odp = new StringBuilder();
-        for (Zadanie i : rep.findByWykonane(wykonane)) {
-            odp.append(i).append("<br>");
-        }
-        return odp.toString();
+    public String getTasksByIsDone(@PathVariable boolean isDone) {
+        StringBuilder response = new StringBuilder();
+        taskRepository.findByIsDone(isDone).forEach(i -> response.append(i).append("<br>"));
+        return response.toString();
     }
 
-    @RequestMapping("/listaZadan/koszt/lessThan/{koszt}")
+    @RequestMapping("/tasks/cost/lessThan/{cost}")
     @ResponseBody
-    public String listaZadanByKosztLessThan(@PathVariable double koszt) {
-        StringBuilder odp = new StringBuilder();
-        for (Zadanie i : rep.findByKosztLessThan(koszt)) {
-            odp.append(i).append("<br>");
-        }
-        return odp.toString();
+    public String getTasksByCostLessThan(@PathVariable double cost) {
+        StringBuilder response = new StringBuilder();
+        taskRepository.findByCostLessThan(cost).forEach(i -> response.append(i).append("<br>"));
+        return response.toString();
     }
 
-    @RequestMapping("/listaZadan/koszt/between/{koszt1}/{koszt2}")
+    @RequestMapping("/tasks/cost/between/{cost1}/{cost2}")
     @ResponseBody
-    public String listaZadanByKosztBetween(@PathVariable double koszt1, @PathVariable double koszt2) {
-        StringBuilder odp = new StringBuilder();
-        for (Zadanie i : rep.findByKosztBetween(koszt1, koszt2)) {
-            odp.append(i).append("<br>");
-        }
-        return odp.toString();
+    public String getTasksByCostBetween(@PathVariable double cost1, @PathVariable double cost2) {
+        StringBuilder response = new StringBuilder();
+        taskRepository.findByCostBetween(cost1, cost2).forEach(i -> response.append(i).append("<br>"));
+        return response.toString();
     }
 
     @RequestMapping("/delete/{id}")
     @ResponseBody
     public String delete(@PathVariable Long id) {
-        rep.deleteById(id);
-        return "Usunięto zadanie o id = " + id;
+        taskRepository.deleteById(id);
+        return "Deleted Task with id = " + id;
     }
 }
