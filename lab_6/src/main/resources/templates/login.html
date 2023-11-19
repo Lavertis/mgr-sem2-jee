@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{layout :: head}"></head>
+<body>
+<div th:insert="~{layout :: navigationPanel}"></div>
+<h1>Logowanie do systemu:</h1>
+<form method="POST" th:action="@{/login}">
+    <input name="login" placeholder="Login" type="text"/>
+    <input name="passwd" placeholder="Hasło" type="password"/>
+    <button type="submit">Zaloguj się</button>
+</form>
+<div th:insert="~{layout :: footer}"></div>
+</body>
+</html>
