@@ -56,4 +56,31 @@ public class UserController {
         // zwrócenie nazwy widoku users.html
         return "users";
     }
+
+    @GetMapping("/users/current/edit")
+    public String editCurrentUser(Model m, Principal principal) {
+        User user = dao.findByLogin(principal.getName());
+        m.addAttribute("user", user);
+        return "user_edit";
+    }
+
+    @PostMapping("/users/current/edit")
+    public String updateCurrentUser(@ModelAttribute User user, Principal principal) {
+        User currentUser = dao.findByLogin(principal.getName());
+        currentUser.setName(user.getName());
+        currentUser.setSurname(user.getSurname());
+        currentUser.setLogin(user.getLogin());
+        if (!user.getPassword().isEmpty()) {
+            currentUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        dao.save(currentUser);
+        return "redirect:/profile";
+    }
+
+    @GetMapping("/users/current/delete")
+    public String deleteCurrentUser(Principal principal) {
+        User user = dao.findByLogin(principal.getName());
+        dao.delete(user);
+        return "redirect:/logout";
+    }
 }

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{layout :: head}"></head>
+<body>
+<div th:insert="~{layout :: navigationPanel}"></div>
+<h1>Edycja obecnego użytkownika</h1>
+<form method="POST" th:action="@{/users/current/edit}" th:object="${user}">
+    <input placeholder="Imię" th:field="*{name}" type="text"/>
+    <input placeholder="Nazwisko" th:field="*{surname}" type="text"/>
+    <input placeholder="Login" th:field="*{login}" type="text"/>
+    <input placeholder="Hasło" th:field="*{password}" type="password"/>
+    <button type="submit">Zapisz</button>
+</form>
+<div th:insert="~{layout :: footer}"></div>
+</body>
+</html>

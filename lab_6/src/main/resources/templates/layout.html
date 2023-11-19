@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="head">
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
@@ -31,19 +31,25 @@
 <body>
 <div th:fragment="navigationPanel">
     <ul class="nav">
-        <li sec:authorize="!isAuthenticated()">
+        <li th:if="${not #authorization.expression('isAuthenticated()')}">
             <a th:href="@{/register}">Zarejestruj się</a>
         </li>
-        <li sec:authorize="isAuthenticated()">
+        <li th:if="${#authorization.expression('isAuthenticated()')}">
             <a th:href="@{/profile}">Wyświetl swoje konto</a>
         </li>
-        <li sec:authorize="isAuthenticated()">
+        <li th:if="${#authorization.expression('isAuthenticated()')}">
             <a th:href="@{/users}">Wyświetl użytkowników</a>
         </li>
-        <li sec:authorize="!isAuthenticated()">
+        <li th:if="${not #authorization.expression('isAuthenticated()')}">
             <a th:href="@{/login}">Zaloguj się</a>
         </li>
-        <li sec:authorize="isAuthenticated()">
+        <li th:if="${#authorization.expression('isAuthenticated()')}">
+            <a th:href="@{/users/current/edit}">Edytuj konto</a>
+        </li>
+        <li th:if="${#authorization.expression('isAuthenticated()')}">
+            <a th:href="@{/users/current/delete}">Usuń konto</a>
+        </li>
+        <li th:if="${#authorization.expression('isAuthenticated()')}">
             <a th:href="@{/logout}">Wyloguj się</a>
         </li>
     </ul>
