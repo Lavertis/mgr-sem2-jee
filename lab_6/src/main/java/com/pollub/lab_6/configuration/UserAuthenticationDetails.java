@@ -19,38 +19,22 @@ public class UserAuthenticationDetails implements UserDetailsService {
     private UserDao dao;
 
     @Override
-    public UserDetails loadUserByUsername(String login)
-            throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         User user = dao.findByLogin(login);
         if (user != null) {
-            List<GrantedAuthority> grupa = new ArrayList<>();
-            grupa.add(new SimpleGrantedAuthority("normalUser"));
-            return new
-                    org.springframework.security.core.userdetails.User(
-                    user.getLogin(), user.getPassword(),
-                    true, true, true, true, grupa);
+            List<GrantedAuthority> group = new ArrayList<>();
+            group.add(new SimpleGrantedAuthority("normalUser"));
+            return org.springframework.security.core.userdetails.User.builder()
+                    .username(user.getLogin())
+                    .password(user.getPassword())
+                    .disabled(false)
+                    .accountExpired(false)
+                    .credentialsExpired(false)
+                    .accountLocked(false)
+                    .authorities(group)
+                    .build();
         } else {
-            throw
-                    new UsernameNotFoundException("Zły login lub hasło.");
+            throw new UsernameNotFoundException("Zły login lub hasło.");
         }
     }
-
-//    @Override
-//    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-//        User user = dao.findByLogin(login);
-//        if (user == null)
-//            throw new UsernameNotFoundException("Zły login lub hasło.");
-//
-//        List<GrantedAuthority> grupa = new ArrayList<>();
-//        grupa.add(new SimpleGrantedAuthority("normalUser"));
-//        return org.springframework.security.core.userdetails.User.builder()
-//                .username(user.getLogin())
-//                .password(user.getPassword())
-//                .disabled(false)
-//                .accountExpired(false)
-//                .credentialsExpired(false)
-//                .accountLocked(false)
-//                .authorities(grupa)
-//                .build();
-//    }
 }

@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class Lab6Application {
     @Autowired
     private UserDao userDao;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 

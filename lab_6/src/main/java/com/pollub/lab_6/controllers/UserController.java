@@ -17,6 +17,7 @@ import java.security.Principal;
 public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Autowired
     private UserDao dao;
 
