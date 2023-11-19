@@ -5,6 +5,9 @@
 <div th:insert="~{layout :: navigationPanel}"></div>
 <h1>Logowanie do systemu:</h1>
 <form method="POST" th:action="@{/login}">
+    <div th:if="${param.error}">
+        <p class="error-message">Invalid username or password.</p>
+    </div>
     <input name="login" placeholder="Login" type="text"/>
     <input name="passwd" placeholder="Hasło" type="password"/>
     <button type="submit">Zaloguj się</button>
