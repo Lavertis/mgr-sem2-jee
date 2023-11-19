@@ -2,12 +2,13 @@ package com.pollub.lab_6.controllers;
 
 import com.pollub.lab_6.dao.UserDao;
 import com.pollub.lab_6.entities.User;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
@@ -34,10 +35,19 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String registerPagePOST(@ModelAttribute User user) {
+    public String registerPagePOST(@Valid User user, BindingResult binding) {
+        if (binding.hasErrors()) {
+            return "register"; // powrót do rejestracji
+        }
+
+        User existingUser = dao.findByLogin(user.getLogin());
+        if (existingUser != null) {
+            binding.rejectValue("login", "error.user", "There is already a user registered with the login provided");
+            return "register";
+        }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         dao.save(user);
-        // przekierowanie do adresu url: /login
         return "redirect:/login";
     }
 
@@ -65,8 +75,18 @@ public class UserController {
     }
 
     @PostMapping("/users/current/edit")
-    public String updateCurrentUser(@ModelAttribute User user, Principal principal) {
+    public String updateCurrentUser(@Valid User user, BindingResult bindingResult, Principal principal) {
+        if (bindingResult.hasErrors()) {
+            return "user_edit"; // Return the view if there are validation errors
+        }
+
         User currentUser = dao.findByLogin(principal.getName());
+        User existingUser = dao.findByLogin(user.getLogin());
+        if (existingUser != null && !existingUser.getId().equals(currentUser.getId()) && existingUser.getLogin().equals(user.getLogin())) {
+            bindingResult.rejectValue("login", "error.user", "There is already a user registered with the login provided");
+            return "user_edit";
+        }
+
         currentUser.setName(user.getName());
         currentUser.setSurname(user.getSurname());
         currentUser.setLogin(user.getLogin());
