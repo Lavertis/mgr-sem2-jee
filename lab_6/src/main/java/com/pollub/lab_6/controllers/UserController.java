@@ -84,18 +84,16 @@ public class UserController {
         User currentUser = dao.findByLogin(principal.getName());
         User existingUser = dao.findByLogin(user.getLogin());
         if (existingUser != null && !existingUser.getId().equals(currentUser.getId()) && existingUser.getLogin().equals(user.getLogin())) {
-            bindingResult.rejectValue("login", "error.user", "There is already a user registered with the login provided");
+            bindingResult.rejectValue("login", "error.user", "Login already exists");
             return "user_edit";
         }
 
         currentUser.setName(user.getName());
         currentUser.setSurname(user.getSurname());
         currentUser.setLogin(user.getLogin());
-        if (!user.getPassword().isEmpty()) {
-            currentUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        }
+        currentUser.setPassword(passwordEncoder.encode(user.getPassword()));
         dao.save(currentUser);
-        return "redirect:/profile";
+        return "redirect:/logout";
     }
 
     @GetMapping("/users/current/delete")
