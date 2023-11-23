@@ -1,7 +1,7 @@
 package com.pollub.lab_6.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
@@ -19,18 +19,19 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @NotNull
+    @NotEmpty
     @Pattern(regexp = "^[A-Z].*", message = "Name must start with capital letter")
     private String name;
 
-    @NotNull
+    @NotEmpty
     @Pattern(regexp = "^[A-Z].*", message = "Surname must start with capital letter")
     private String surname;
 
-    @NotNull
+    @NotEmpty
     @Size(min = 3, max = 10)
     private String login;
 
+    @NotEmpty
     @Size(min = 4, message = "Password must be at least 4 characters long")
     private String password;
 
