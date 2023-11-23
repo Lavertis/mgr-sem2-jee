@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="lab_6" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="lab_6" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.pollub.lab_6.Lab6Application" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

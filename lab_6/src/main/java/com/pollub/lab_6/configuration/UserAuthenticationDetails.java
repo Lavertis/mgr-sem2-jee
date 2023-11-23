@@ -21,20 +21,18 @@ public class UserAuthenticationDetails implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         User user = dao.findByLogin(login);
-        if (user != null) {
-            List<GrantedAuthority> group = new ArrayList<>();
-            group.add(new SimpleGrantedAuthority("normalUser"));
-            return org.springframework.security.core.userdetails.User.builder()
-                    .username(user.getLogin())
-                    .password(user.getPassword())
-                    .disabled(false)
-                    .accountExpired(false)
-                    .credentialsExpired(false)
-                    .accountLocked(false)
-                    .authorities(group)
-                    .build();
-        } else {
-            throw new UsernameNotFoundException("Zły login lub hasło.");
-        }
+        if (user == null) throw new UsernameNotFoundException("Zły login lub hasło.");
+
+        List<GrantedAuthority> group = new ArrayList<>();
+        group.add(new SimpleGrantedAuthority("normalUser"));
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(user.getLogin())
+                .password(user.getPassword())
+                .disabled(false)
+                .accountExpired(false)
+                .credentialsExpired(false)
+                .accountLocked(false)
+                .authorities(group)
+                .build();
     }
 }

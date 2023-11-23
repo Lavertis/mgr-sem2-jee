@@ -31,7 +31,7 @@ public class User {
     @Size(min = 3, max = 10)
     private String login;
 
-    @Size(min = 4)
+    @Size(min = 4, message = "Password must be at least 4 characters long")
     private String password;
 
     @Builder

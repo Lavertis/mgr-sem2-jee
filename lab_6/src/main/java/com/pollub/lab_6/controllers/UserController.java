@@ -43,7 +43,7 @@ public class UserController {
 
         User existingUser = dao.findByLogin(user.getLogin());
         if (existingUser != null) {
-            binding.rejectValue("login", "error.user", "There is already a user registered with the login provided");
+            binding.rejectValue("login", "error.user", "User with that login already exists");
             return "register";
         }
 

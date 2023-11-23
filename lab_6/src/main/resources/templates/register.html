@@ -12,23 +12,31 @@
     <table>
         <tr>
             <td><label for="name">Imię:</label></td>
-            <td><input id="name" placeholder="Imię" th:field="*{name}" type="text"/>
-                <span class="error" th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></span></td>
+            <td>
+                <input id="name" placeholder="Imię" th:field="*{name}" type="text"/>
+                <span class="error" th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></span>
+            </td>
         </tr>
         <tr>
             <td><label for="surname">Nazwisko:</label></td>
-            <td><input id="surname" placeholder="Nazwisko" th:field="*{surname}" type="text"/>
-                <span class="error" th:errors="*{surname}" th:if="${#fields.hasErrors('surname')}"></span></td>
+            <td>
+                <input id="surname" placeholder="Nazwisko" th:field="*{surname}" type="text"/>
+                <span class="error" th:errors="*{surname}" th:if="${#fields.hasErrors('surname')}"></span>
+            </td>
         </tr>
         <tr>
             <td><label for="login">Login:</label></td>
-            <td><input id="login" placeholder="Login" th:field="*{login}" type="text"/>
-                <span class="error" th:errors="*{login}" th:if="${#fields.hasErrors('login')}"></span></td>
+            <td>
+                <input id="login" placeholder="Login" th:field="*{login}" type="text"/>
+                <span class="error" th:errors="*{login}" th:if="${#fields.hasErrors('login')}"></span>
+            </td>
         </tr>
         <tr>
             <td><label for="password">Hasło:</label></td>
-            <td><input id="password" placeholder="Hasło" th:field="*{password}" type="password"/>
-                <span class="error" th:errors="*{password}" th:if="${#fields.hasErrors('password')}"></span></td>
+            <td>
+                <input id="password" placeholder="Hasło" th:field="*{password}" type="password"/>
+                <span class="error" th:errors="*{password}" th:if="${#fields.hasErrors('password')}"></span>
+            </td>
         </tr>
     </table>
     <br/>
