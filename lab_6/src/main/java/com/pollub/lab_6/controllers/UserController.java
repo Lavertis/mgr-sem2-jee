@@ -1,9 +1,13 @@
 package com.pollub.lab_6.controllers;
 
+import com.pollub.lab_6.configuration.UserAuthenticationDetails;
 import com.pollub.lab_6.dao.UserDao;
 import com.pollub.lab_6.entities.User;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +21,9 @@ import java.security.Principal;
 public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserAuthenticationDetails userAuthenticationDetails;
 
     @Autowired
     private UserDao dao;
@@ -93,7 +100,16 @@ public class UserController {
         currentUser.setLogin(user.getLogin());
         currentUser.setPassword(passwordEncoder.encode(user.getPassword()));
         dao.save(currentUser);
-        return "redirect:/logout";
+
+        var userDetails = userAuthenticationDetails.loadUserByUsername(currentUser.getLogin());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                userDetails,
+                userDetails.getPassword(),
+                userDetails.getAuthorities()
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return "redirect:/profile";
     }
 
     @GetMapping("/users/current/delete")
