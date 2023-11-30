@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Student Controller</title>
+</head>
+<body>
+
+<h1>Student Controller</h1>
+
+<form id="studentForm">
+    <label for="name">Name:</label>
+    <input id="name" required type="text">
+    <br>
+
+    <label for="surname">Surname:</label>
+    <input id="surname" required type="text">
+    <br>
+
+    <label for="email">Email:</label>
+    <input id="email" required type="email">
+    <br>
+
+    <label for="average">Average:</label>
+    <input id="average" required step="0.01" type="number">
+    <br>
+
+    <button onclick="createStudent()" type="button">Create</button>
+    <button onclick="saveStudent()" style="display: none;" type="button">Save</button>
+    <button onclick="cancelEdit()" style="display: none;" type="button">Cancel</button>
+</form>
+
+<h2>Student List</h2>
+<ul id="studentList"></ul>
+
+<script>
+    const apiUrl = '/students';
+    let students = []; // Global variable to store student objects
+    let editingStudentId = null;
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Load all students on page load
+        getAllStudents();
+    });
+
+    function createStudent() {
+        const name = document.getElementById('name').value;
+        const surname = document.getElementById('surname').value;
+        const email = document.getElementById('email').value;
+        const average = parseFloat(document.getElementById('average').value);
+
+        const newStudent = {
+            name: name,
+            surname: surname,
+            email: email,
+            average: average
+        };
+
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newStudent),
+        })
+            .then(response => response.json())
+            .then(() => {
+                alert('Student created successfully!');
+                getAllStudents();
+                clearForm();
+            })
+            .catch(error => {
+                alert('Error creating student: ' + error);
+            });
+    }
+
+    function editStudent(id) {
+        const student = getStudentById(id);
+
+        document.getElementById('name').value = student.name;
+        document.getElementById('surname').value = student.surname;
+        document.getElementById('email').value = student.email;
+        document.getElementById('average').value = student.average;
+
+        // Set the current editing student ID
+        editingStudentId = id;
+
+        // Hide Create button, show Save and Cancel buttons
+        document.querySelector('button[type="button"][onclick="createStudent()"]').style.display = 'none';
+        document.querySelector('button[type="button"][onclick="saveStudent()"]').style.display = 'inline-block';
+        document.querySelector('button[type="button"][onclick="cancelEdit()"]').style.display = 'inline-block';
+    }
+
+    function saveStudent() {
+        const name = document.getElementById('name').value;
+        const surname = document.getElementById('surname').value;
+        const email = document.getElementById('email').value;
+        const average = parseFloat(document.getElementById('average').value);
+
+        const updatedStudent = {
+            name: name,
+            surname: surname,
+            email: email,
+            average: average
+        };
+
+        fetch(`${apiUrl}/${editingStudentId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedStudent),
+        })
+            .then(response => response.json())
+            .then(() => {
+                alert('Student updated successfully!');
+                getAllStudents();
+                clearForm();
+                editingStudentId = null;
+
+                // Show Create button, hide Save and Cancel buttons
+                document.querySelector('button[type="button"][onclick="createStudent"]').style.display = 'inline-block';
+                document.querySelector('button[type="button"][onclick="saveStudent"]').style.display = 'none';
+                document.querySelector('button[type="button"][onclick="cancelEdit"]').style.display = 'none';
+            })
+            .catch(error => {
+                alert('Error updating student: ' + error);
+            });
+    }
+
+    function cancelEdit() {
+        // Clear the form and hide Save and Cancel buttons, show Create button
+        clearForm();
+        document.querySelector('button[type="button"][onclick="createStudent()"]').style.display = 'inline-block';
+        document.querySelector('button[type="button"][onclick="saveStudent()"]').style.display = 'none';
+        document.querySelector('button[type="button"][onclick="cancelEdit()"]').style.display = 'none';
+
+        // Reset the editing student ID
+        editingStudentId = null;
+    }
+
+    function getAllStudents() {
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                students = data; // Update the global variable with the fetched data
+                displayStudents(students);
+            })
+            .catch(error => {
+                alert('Error getting students: ' + error);
+            });
+    }
+
+    function deleteStudent(id) {
+        fetch(`${apiUrl}/${id}`, {
+            method: 'DELETE',
+        })
+            .then(() => {
+                alert('Student deleted successfully!');
+                getAllStudents();
+            })
+            .catch(error => {
+                alert('Error deleting student: ' + error);
+            });
+    }
+
+    function displayStudents(students) {
+        const studentList = document.getElementById('studentList');
+        studentList.innerHTML = '';
+
+        students.forEach(function (student) {
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `Name: ${student.name}, Surname: ${student.surname}, Email: ${student.email}, Average: ${student.average}&nbsp;`;
+
+            const editButton = document.createElement('button');
+            editButton.textContent = 'Edit';
+            editButton.addEventListener('click', () => editStudent(student.id));
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.addEventListener('click', () => deleteStudent(student.id));
+
+            listItem.appendChild(editButton);
+            listItem.appendChild(deleteButton);
+            studentList.appendChild(listItem);
+        });
+    }
+
+    function clearForm() {
+        document.getElementById('name').value = '';
+        document.getElementById('surname').value = '';
+        document.getElementById('email').value = '';
+        document.getElementById('average').value = '';
+    }
+
+    function getStudentById(id) {
+        // Replace this with your actual logic to retrieve a student by ID from the global variable
+        return students.find(student => student.id === id);
+    }
+</script>
+
+</body>
+</html>
